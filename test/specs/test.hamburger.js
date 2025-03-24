@@ -13,7 +13,7 @@ describe('Log in', () => {
     })
 })
 
-// Hamburger Menu
+// Hamburger Menu Open
 describe('Open hamburger menu', () => {
     it('Should show expected menu items', async () => {
         await Hamburger.buttonHamburger.click()

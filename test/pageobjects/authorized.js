@@ -10,7 +10,6 @@ class Authorized extends BasePage {
         return $('//span[@data-test="title"][contains(text(),"Products")]')
     }
     async verifyLoggedIn () {
-        // await this.navigateToPage()
         await expect(this.spanProducts).toBeExisting()
     }
 
