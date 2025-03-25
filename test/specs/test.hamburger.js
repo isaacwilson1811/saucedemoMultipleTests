@@ -1,8 +1,6 @@
 import Authorize from '../pageobjects/authorize.js'
 import Hamburger from '../pageobjects/hamburger.js'
 
-// Should be able to run test with any valid user.
-// No password needed. Using cookies to log in.
 const userName = 'standard_user'
 
 // Login
@@ -12,13 +10,23 @@ describe(`Log in as ${userName}`, () => {
     })
 })
 
-// Hamburger Menu Open
+// Open the Hamburger Menu
+// Verify all expected items are present
 describe('Open hamburger menu', () => {
     it('Should show expected menu items', async () => {
         await Hamburger.buttonOpenMenu.click()
-        await Hamburger.verifyMenuItems()
+        await Hamburger.verifyMenuItemsExist(true)
     })
 })
+
+// Close Hamburger Menu
+// Verify items are hidden
+// describe('Close hamburger menu', () => {
+//     it('Should hide expected menu items', async () => {
+//         await Hamburger.buttonCloseMenu.click()
+//         await Hamburger.verifyMenuItemsExist(false)
+//     })
+// })
 
 // Logout
 describe('Log out', () => {

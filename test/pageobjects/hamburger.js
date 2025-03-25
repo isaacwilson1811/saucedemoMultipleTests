@@ -8,7 +8,7 @@ class Hamburger {
     get buttonCloseMenu () {
         return $('//button[@id="react-burger-cross-btn"]')
     }
-    get menuAllItems () {
+    get menuAllItems () { // Confusingly named AllItems. It's a link to the Inventory page
         return $('//a[@data-test="inventory-sidebar-link"]')
     }
     get menuAbout () {
@@ -17,16 +17,24 @@ class Hamburger {
     get menuLogout () {
         return $('//a[@data-test="logout-sidebar-link"]')
     }
-    get menuReset () {
+    get menuResetAppState () {
         return $('//a[@data-test="reset-sidebar-link"]')
     }
-
-    async verifyMenuItems () {
-        await expect(this.buttonCloseMenu).toBeExisting()
-        await expect(this.menuAllItems).toBeExisting()
-        await expect(this.menuAbout).toBeExisting()
-        await expect(this.menuLogout).toBeExisting()
-        await expect(this.menuReset).toBeExisting()
+    
+    async verifyMenuItemsExist (bool) {
+        const expectedItems = [
+            this.buttonCloseMenu,
+            this.menuAllItems,
+            this.menuAbout,
+            this.menuLogout,
+            this.menuResetAppState
+        ]
+        for (let index = 0; index < expectedItems.length; index++) {
+            const menuItem = expectedItems[index]
+            await expect(menuItem).toBeExisting()
+            // const isDisplayed = await menuItem.isDisplayedInViewport()
+            // bool ? await expect(isDisplayed).toBe(true) : await expect(isDisplayed).toBe(false)
+        }
     }
 
 }
