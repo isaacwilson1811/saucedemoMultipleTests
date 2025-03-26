@@ -31,4 +31,8 @@ export default class BaseLogic {
         const myCookie = cookiesAfterDeletion.find(cookie => cookie.name === `${cookiename}`)
         await expect(myCookie).toBeUndefined()
     }
+
+    async reload () {
+        await browser.refresh()
+    }
 }

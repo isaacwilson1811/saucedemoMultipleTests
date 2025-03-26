@@ -1,7 +1,12 @@
 import { $ } from '@wdio/globals'
+import BaseLogic from './base_logic.js'
 import Verify from './verify'
 
-class Hamburger {
+class Hamburger extends BaseLogic{
+
+    navigateToPage (endpoint) {
+        return super.navigateTo(endpoint)
+    }
 
     get buttonOpenMenu () {
         return $('//button[@id="react-burger-menu-btn"]')
@@ -32,7 +37,7 @@ class Hamburger {
     async menuItems (menuState) {
         setTimeout(() => { this.parseExpectedMenuItems(menuState); }, 10)
     }
-    
+
     async parseExpectedMenuItems (menuState) {
         let expectedItems = [
             this.buttonCloseMenu,
@@ -48,6 +53,39 @@ class Hamburger {
             default: expectHidden = false
         }
         await Verify.elementsExist(expectedItems,expectHidden)
+    }
+
+    async openMenuAndClickItem(item) {
+        await this.navigateToPage('inventory.html')
+        await this.reload()
+        await this.buttonOpenMenu.click()
+        let expectedEndpoint
+        switch(item){
+            case 'All Items':
+                expectedEndpoint = 'inventory.html'
+                await this.menuAllItems.click()
+                break
+            case 'About':
+                expectedEndpoint = 'https://saucelabs.com/'
+                await this.menuAbout.click()
+                break
+            case 'Logout':
+                expectedEndpoint = ''
+                await this.menuLogout.click()
+                break
+            case 'Reset App State':
+                expectedEndpoint = 'inventory.html'
+                await this.menuResetAppState.click()
+        }
+        await this.verifyItemClicked(item,expectedEndpoint)
+    }
+
+    async verifyItemClicked (item,expectedEndpoint) {
+        if (item == 'About'){
+            await Verify.currentURL(expectedEndpoint)
+        } else {
+            await Verify.currentEndpoint(expectedEndpoint)
+        }
     }
 
 }

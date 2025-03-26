@@ -24,8 +24,32 @@ describe('Close hamburger menu', () => {
     })
 })
 
-describe('Log out', () => {
-    it('Should log out succesfully', async () => {
-        await Authorize.logout()
+describe('Click \'All Items\' from menu', () => {
+    it('Should navigate to /inventory.html ', async () => {
+        await Hamburger.openMenuAndClickItem('All Items')
     })
 })
+
+describe('Click \'About\' from menu', () => {
+    it('Should navigate to https://saucelabs.com/ ', async () => {
+        await Hamburger.openMenuAndClickItem('About')
+    })
+})
+
+describe('Click \'Reset App State\' from menu', () => {
+    it('Should remove items from cart', async () => {
+        await Hamburger.openMenuAndClickItem('Reset App State')
+    })
+})
+
+describe('Click \'Logout\' from menu', () => {
+    it('Should be logged out and directed to homepage', async () => {
+        await Hamburger.openMenuAndClickItem('Logout')
+    })
+})
+
+// describe('Delete session cookie to log out', () => {
+//     it('Should be logged out', async () => {
+//         await Authorize.logout()
+//     })
+// })

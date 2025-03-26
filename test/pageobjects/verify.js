@@ -34,6 +34,18 @@ class Verify extends BaseLogic {
         }
     }
 
+    async currentEndpoint (expectedEndpoint) {
+        const currentURL = await browser.getUrl()
+        await expect(currentURL).toBe(`${this.baseURL}/${expectedEndpoint}`)
+
+    }
+
+    async currentURL (expectedURL) {
+        const currentURL = await browser.getUrl()
+        await expect(currentURL).toBe(expectedURL)
+
+    }
+
 }
 
 export default new Verify()
