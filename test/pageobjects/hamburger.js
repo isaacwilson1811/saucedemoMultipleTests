@@ -27,18 +27,7 @@ class Hamburger extends BaseLogic{
         return $('//a[@data-test="reset-sidebar-link"]')
     }
 
-    // Hamburger menu open/close toggle will update the html attributes of menu items after a small but inconsistent delay.
-    // On page load, the hidden menu items have the attribute tabindex="-1" which gets removed or appended back to toggle visibility.
-    // Page object getters in wdio are 'lazy loaded'. They are async evaluated when referenced.
-    // They sometimes fail to evaluate with recent attribute changes when referenced again too soon. (Do they use a cache?)
-    // Or they fail because they are resolving their promised value too early while the DOM is still updating.
-    // I'm forcing this verification method to wait a miniscule ammount of time to allow wdio a quiet moment to think about it's behavior.
-
-    async menuItems (menuState) {
-        setTimeout(() => { this.parseExpectedMenuItems(menuState); }, 10)
-    }
-
-    async parseExpectedMenuItems (menuState) {
+    async verifyMenuItems (menuState) {
         let expectedItems = [
             this.buttonCloseMenu,
             this.menuAllItems,

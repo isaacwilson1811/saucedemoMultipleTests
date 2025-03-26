@@ -29,6 +29,7 @@ class Verify extends BaseLogic {
     async elementsExist (expectedElements, expectHidden) {        
         for (let i = 0; i < expectedElements.length; i++) {
             let element = expectedElements[i]
+            await element.waitForExist()
             await expect(element).toBeExisting()
             expectHidden ? await expect(element).toHaveAttribute('tabindex', '-1') : await expect(element).not.toHaveAttribute('tabindex', '-1')
         }

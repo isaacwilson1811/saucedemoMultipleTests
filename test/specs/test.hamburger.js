@@ -14,14 +14,14 @@ describe(`Be loggged in as ${username}`, () => {
 describe('Open hamburger menu', () => {
     it('Should show expected menu items', async () => {
         await Hamburger.buttonOpenMenu.click()
-        await Hamburger.menuItems('when menu is open')
+        await Hamburger.verifyMenuItems('when menu is open')
     })
 })
 
 describe('Close hamburger menu', () => {
     it('Should hide expected menu items', async () => {
         await Hamburger.buttonCloseMenu.click()
-        await Hamburger.menuItems('when menu is closed')
+        await Hamburger.verifyMenuItems('when menu is closed')
     })
 })
 
