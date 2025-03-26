@@ -1,6 +1,6 @@
 import { browser, expect } from '@wdio/globals'
 
-export default class BasePage {
+export default class BaseLogic {
     // URL Navigation
     domain = 'www.saucedemo.com'
     baseURL = `https://${this.domain}`
@@ -31,5 +31,4 @@ export default class BasePage {
         const myCookie = cookiesAfterDeletion.find(cookie => cookie.name === `${cookiename}`)
         await expect(myCookie).toBeUndefined()
     }
-
 }

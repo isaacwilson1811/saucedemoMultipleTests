@@ -2,9 +2,10 @@ import Authorize from '../pageobjects/authorize.js'
 import Hamburger from '../pageobjects/hamburger.js'
 
 const username = 'standard_user'
+// No need for password. Using cookie to already be logged in.
 
-describe(`Log in as ${username}`, () => {
-    it('Should log in succesfully', async () => {
+describe(`Be loggged in as ${username}`, () => {
+    it('Should be logged in', async () => {
         await Authorize.login(username)
     })
 })
@@ -12,14 +13,14 @@ describe(`Log in as ${username}`, () => {
 describe('Open hamburger menu', () => {
     it('Should show expected menu items', async () => {
         await Hamburger.buttonOpenMenu.click()
-        await Hamburger.verifyMenuItemsExist('when menu is open')
+        await Hamburger.menuItems('when menu is open')
     })
 })
 
 describe('Close hamburger menu', () => {
     it('Should hide expected menu items', async () => {
         await Hamburger.buttonCloseMenu.click()
-        await Hamburger.verifyMenuItemsExist('when menu is closed')
+        await Hamburger.menuItems('when menu is closed')
     })
 })
 

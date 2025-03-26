@@ -1,35 +1,32 @@
-import { $, expect } from '@wdio/globals'
-import BasePage from './base.js'
+import BaseLogic from './base_logic.js'
+import Verify from './verify.js'
 
-class Authorize extends BasePage {
+class Authorize extends BaseLogic {
+
+    superSecretSessionCookieName = 'session-username'
 
     navigateToPage (endpoint) {
         return super.navigateTo(endpoint)
     }
-    async setSessionCookie (username) {
-        return super.setCookie('session-username', username)
+    async setSessionCookieFor (username) {
+        return super.setCookie(this.superSecretSessionCookieName, username)
     }
-    async deleteSessionCookie (cookiename) {
-        return super.deleteCookie(cookiename)
+    async deleteSessionCookie () {
+        return super.deleteCookie(this.superSecretSessionCookieName)
     }
 
     // Log in using cookie
     async login (username) {
-        await this.setSessionCookie(username)
+        await this.setSessionCookieFor(username)
         await this.navigateToPage('inventory.html')
-        // Verify UI Element exists that is only available while logged in.
-        await expect($('//span[@data-test="title"][contains(text(),"Products")]')).toBeExisting()
+        await Verify.loggedInUI(true)
     }
 
     // Log out using cookie
     async logout () {
-        await this.deleteSessionCookie('session-username')
+        await this.deleteSessionCookie()
         await this.navigateToPage('')
-        // Verify logged out Error when trying to navigate back to inventory
-        await this.navigateToPage('inventory.html')
-        await expect(
-                $('//*[@data-test="error"][contains(text(),"You can only access \'/inventory.html\' when you are logged in")]')
-            ).toBeExisting()
+        await Verify.loggedInUI(false)
     }
 
 }
