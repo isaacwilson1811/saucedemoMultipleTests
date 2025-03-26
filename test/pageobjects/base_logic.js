@@ -31,6 +31,15 @@ export default class BaseLogic {
         const myCookie = cookiesAfterDeletion.find(cookie => cookie.name === `${cookiename}`)
         await expect(myCookie).toBeUndefined()
     }
+    // Local Storage Manipulation
+    // Have to do weird node enviroment to browser context passing. 
+    async setLocalStorage(key, value) {
+        await browser.execute((key, value) => { localStorage.setItem(key, JSON.stringify(value)) }, key, value)
+    }
+    async getLocalStorage(key) {
+        const value = await browser.execute((key) => { return localStorage.getItem(key) }, key)
+        if (value) { return JSON.parse(value) } else { return null }
+    }
 
     async reload () {
         await browser.refresh()
