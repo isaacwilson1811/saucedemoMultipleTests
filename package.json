@@ -8,6 +8,7 @@
     "@wdio/spec-reporter": "^9.11.0"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./wdio.conf.js",
+    "hamburger": "npx wdio run ./wdio.conf.js --spec test.hamburger.js"
   }
 }
