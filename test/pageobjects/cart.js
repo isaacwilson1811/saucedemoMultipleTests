@@ -3,7 +3,7 @@ import { expect } from '@wdio/globals'
 
 class Cart extends BaseLogic {
 
-    async addItemsToCart () {
+    async addMockItemsToCart () {
         return super.setLocalStorage('cart-contents', [0,0,0,0,1,2,3,4,5])
     }
 
