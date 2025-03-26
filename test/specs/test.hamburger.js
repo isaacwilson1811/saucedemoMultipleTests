@@ -12,8 +12,10 @@ describe(`Be loggged in as ${username}`, () => {
 })
 
 describe('Open hamburger menu', () => {
-    it('Should show expected menu items', async () => {
+    it('Should open menu', async () => {
         await Hamburger.buttonOpenMenu.click()
+    })
+    it('Should show expected menu items', async () => {
         await Hamburger.verifyMenuItems('when menu is open')
     })
 })

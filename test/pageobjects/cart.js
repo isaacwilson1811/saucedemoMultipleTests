@@ -3,8 +3,24 @@ import { expect } from '@wdio/globals'
 
 class Cart extends BaseLogic {
 
-    async addMockItemsToCart () {
-        return super.setLocalStorage('cart-contents', [0,0,0,0,1,2,3,4,5])
+    get buttonCart () {
+        return $('//a[@data-test="shopping-cart-link"]')
+    }
+    get cartBadge () {
+        return $('//span[@data-test="shopping-cart-badge"]')
+    }
+
+    async cartBadgeNumberOfItems () {
+        await this.cartBadge.waitForExist()
+        let itemCount = await this.cartBadge.getText()
+        return Number(itemCount)
+    }
+ 
+    async addMockItemsToCart (array) {
+        return super.setLocalStorage('cart-contents', array)
+    }
+    async deleteCartItems() {
+        return super.deleteLocalStorage('cart-contents')
     }
 
     async checkCartIsNotEmpty () {

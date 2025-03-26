@@ -1,4 +1,4 @@
-import { $, expect } from '@wdio/globals'
+import { $, expect, browser } from '@wdio/globals'
 import BaseLogic from './base_logic.js'
 
 class Verify extends BaseLogic {
@@ -45,6 +45,17 @@ class Verify extends BaseLogic {
         const currentURL = await browser.getUrl()
         await expect(currentURL).toBe(expectedURL)
 
+    }
+
+    async invalidProductError () {
+        await this.navigateToPage('cart.html')
+
+        const logs = await browser.getLogs('browser')
+        const expectedError = 'Cannot read properties of undefined'
+        const errorLogs = logs.filter(log => log.level === 'SEVERE' && log.message.includes(expectedError))
+
+        console.log(errorLogs)
+        await expect(errorLogs.length).toBeGreaterThan(0)
     }
 
 }

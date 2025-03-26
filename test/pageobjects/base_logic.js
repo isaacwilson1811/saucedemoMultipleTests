@@ -40,7 +40,9 @@ export default class BaseLogic {
         const value = await browser.execute((key) => { return localStorage.getItem(key) }, key)
         if (value) { return JSON.parse(value) } else { return null }
     }
-
+    async deleteLocalStorage(key) {
+        await browser.execute((key) => { localStorage.removeItem(key) }, key)
+    }
     async reload () {
         await browser.refresh()
     }
