@@ -8,7 +8,7 @@ class Hamburger {
     get buttonCloseMenu () {
         return $('//button[@id="react-burger-cross-btn"]')
     }
-    get menuAllItems () { // Confusingly named AllItems. It's a link to the Inventory page
+    get menuAllItems () {
         return $('//a[@data-test="inventory-sidebar-link"]')
     }
     get menuAbout () {
@@ -20,20 +20,39 @@ class Hamburger {
     get menuResetAppState () {
         return $('//a[@data-test="reset-sidebar-link"]')
     }
+
+    // Hamburger menu open/close toggle will update the html attributes of items after a small but inconsistent delay.
+    // On page load, the hidden menu items have the attribute tabindex="-1" which gets removed or appended back to toggle visibility.
+    // Page object getters in wdio are 'lazy loaded'. They are async evaluated when referenced.
+    // They sometimes fail to evaluate with recent attribute changes when referenced again too soon. (Do they use a cache?)
+    // Or they fail because they are resolving their promised value too early while the DOM is still updating.
+    // I'm forcing this verification method to wait a miniscule ammount of time to allow wdio a quiet moment to think about it's behavior.
+
+    async verifyMenuItemsExist (menuState) {
+        setTimeout(() => { this.delayedVerifyMenuItemsExist(menuState); }, 10)
+    }
     
-    async verifyMenuItemsExist (bool) {
-        const expectedItems = [
+    async delayedVerifyMenuItemsExist (menuState) {
+
+        let expectedItems = [
             this.buttonCloseMenu,
             this.menuAllItems,
             this.menuAbout,
             this.menuLogout,
             this.menuResetAppState
         ]
-        for (let index = 0; index < expectedItems.length; index++) {
-            const menuItem = expectedItems[index]
-            await expect(menuItem).toBeExisting()
-            // const isDisplayed = await menuItem.isDisplayedInViewport()
-            // bool ? await expect(isDisplayed).toBe(true) : await expect(isDisplayed).toBe(false)
+
+        let expectHidden
+        switch(menuState){
+            case 'when menu is closed': expectHidden = true; break
+            case 'when menu is open': expectHidden = false; break
+            default: expectHidden = false
+        }
+        
+        for (let i = 0; i < expectedItems.length; i++) {
+            let item = expectedItems[i]
+            await expect(item).toBeExisting()
+            expectHidden ? await expect(item).toHaveAttribute('tabindex', '-1') : await expect(item).not.toHaveAttribute('tabindex', '-1')
         }
     }
 
