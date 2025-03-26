@@ -1,34 +1,28 @@
 import Authorize from '../pageobjects/authorize.js'
 import Hamburger from '../pageobjects/hamburger.js'
 
-const userName = 'standard_user'
+const username = 'standard_user'
 
-// Login
-describe(`Log in as ${userName}`, () => {
+describe(`Log in as ${username}`, () => {
     it('Should log in succesfully', async () => {
-        await Authorize.login(userName)
+        await Authorize.login(username)
     })
 })
 
-// Open the Hamburger Menu
-// Verify all expected items are present
 describe('Open hamburger menu', () => {
     it('Should show expected menu items', async () => {
         await Hamburger.buttonOpenMenu.click()
-        await Hamburger.verifyMenuItemsExist(true)
+        await Hamburger.verifyMenuItemsExist('when menu is open')
     })
 })
 
-// Close Hamburger Menu
-// Verify items are hidden
-// describe('Close hamburger menu', () => {
-//     it('Should hide expected menu items', async () => {
-//         await Hamburger.buttonCloseMenu.click()
-//         await Hamburger.verifyMenuItemsExist(false)
-//     })
-// })
+describe('Close hamburger menu', () => {
+    it('Should hide expected menu items', async () => {
+        await Hamburger.buttonCloseMenu.click()
+        await Hamburger.verifyMenuItemsExist('when menu is closed')
+    })
+})
 
-// Logout
 describe('Log out', () => {
     it('Should log out succesfully', async () => {
         await Authorize.logout()
