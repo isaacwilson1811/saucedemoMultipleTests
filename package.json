@@ -9,6 +9,7 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js",
-    "hamburger": "npx wdio run ./wdio.conf.js --spec test.hamburger.js"
+    "hamburger": "npx wdio run ./wdio.conf.js --spec test.hamburger.js",
+    "cart": "npx wdio run ./wdio.conf.js --spec test.cart.js"
   }
 }
