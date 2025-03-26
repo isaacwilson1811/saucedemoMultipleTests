@@ -1,5 +1,6 @@
 import Authorize from '../pageobjects/authorize.js'
 import Hamburger from '../pageobjects/hamburger.js'
+import Cart from '../pageobjects/cart.js'
 
 const username = 'standard_user'
 // No need for password. Using cookie to already be logged in.
@@ -36,20 +37,29 @@ describe('Click \'About\' from menu', () => {
     })
 })
 
-describe('Click \'Reset App State\' from menu', () => {
-    it('Should remove items from cart', async () => {
-        await Hamburger.openMenuAndClickItem('Reset App State')
-    })
-})
-
 describe('Click \'Logout\' from menu', () => {
     it('Should be logged out and directed to homepage', async () => {
         await Hamburger.openMenuAndClickItem('Logout')
     })
 })
 
-// describe('Delete session cookie to log out', () => {
-//     it('Should be logged out', async () => {
-//         await Authorize.logout()
-//     })
-// })
+describe(`Be loggged in as ${username} again`, () => {
+    it('Should be logged in', async () => {
+        await Authorize.login(username)
+    })
+})
+
+describe('Click \'Reset App State\' from menu', () => {
+    it('Should remove items from cart', async () => {
+        await Cart.addItemsToCart()
+        await Cart.checkCartIsNotEmpty()
+        await Hamburger.openMenuAndClickItem('Reset App State')
+        await Cart.checkCartIsEmpty()
+    })
+})
+
+describe('Delete session cookie to log out if it exists', () => {
+    it('Should be logged out', async () => {
+        await Authorize.logout()
+    })
+})

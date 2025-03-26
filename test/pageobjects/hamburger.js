@@ -72,6 +72,7 @@ class Hamburger extends BaseLogic{
             case 'Logout':
                 expectedEndpoint = ''
                 await this.menuLogout.click()
+                await Verify.loggedInUI(false)
                 break
             case 'Reset App State':
                 expectedEndpoint = 'inventory.html'
