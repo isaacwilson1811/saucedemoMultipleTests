@@ -5,9 +5,6 @@ class Authorize extends BaseLogic {
 
     superSecretSessionCookieName = 'session-username'
 
-    navigateToPage (endpoint) {
-        return super.navigateTo(endpoint)
-    }
     async setSessionCookieFor (username) {
         return super.setCookie(this.superSecretSessionCookieName, username)
     }
@@ -18,14 +15,12 @@ class Authorize extends BaseLogic {
     // Log in using cookie
     async login (username) {
         await this.setSessionCookieFor(username)
-        await this.navigateToPage('inventory.html')
         await Verify.loggedInUI(true)
     }
 
     // Log out using cookie
     async logout () {
         await this.deleteSessionCookie()
-        await this.navigateToPage('')
         await Verify.loggedInUI(false)
     }
 

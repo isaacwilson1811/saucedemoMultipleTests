@@ -3,10 +3,6 @@ import BaseLogic from './base_logic.js'
 
 class Verify extends BaseLogic {
 
-    navigateToPage (endpoint) {
-        return super.navigateTo(endpoint)
-    }
-
     get loggedInElement () {
         return $('//*[@data-test="footer"]')
     }
@@ -14,7 +10,12 @@ class Verify extends BaseLogic {
         return $('//*[@data-test="error"][contains(text(),"You can only access \'/inventory.html\' when you are logged in")]')
     }
 
+    navigateToPage (endpoint) {
+        return super.navigateTo(endpoint)
+    }
+
     async loggedInUI (loggedIn) {
+        await this.navigateToPage('')
         await this.navigateToPage('inventory.html')
         if (loggedIn == true) {
             await expect(this.errorMessageNotLoggedIn).not.toBeExisting()
