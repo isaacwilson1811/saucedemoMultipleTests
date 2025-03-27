@@ -1,17 +1,21 @@
 import Authorize from '../pageobjects/authorize.js'
 import Hamburger from '../pageobjects/hamburger.js'
 import Cart from '../pageobjects/cart.js'
-
 const username = 'standard_user'
-// No need for password. Using cookie to already be logged in.
 
-describe(`Be loggged in as ${username}`, () => {
-    it('Should be logged in', async () => {
+// Test case/plan in Jira:
+// [saucedemo.com] Hamburger Menu Component
+// https://mtechqa.atlassian.net/browse/MTQA-2431
+
+// 1.
+describe('Skip Login', () => {
+    it(`Should be logged via cookie as ${username}`, async () => {
         await Authorize.login(username)
     })
 })
 
-describe('Open hamburger menu', () => {
+// 2.
+describe('Click open menu button', () => {
     it('Should open menu', async () => {
         await Hamburger.buttonOpenMenu.click()
     })
@@ -20,13 +24,17 @@ describe('Open hamburger menu', () => {
     })
 })
 
-describe('Close hamburger menu', () => {
-    it('Should hide expected menu items', async () => {
+// 3.
+describe('Click close menu button', () => {
+    it('Should close menu', async () => {
         await Hamburger.buttonCloseMenu.click()
+    })
+    it('Should hide expected menu items', async () => {
         await Hamburger.verifyMenuItems('when menu is closed')
     })
 })
 
+// 4.
 describe('Click \'All Items\' from menu', () => {
     it('Should navigate to /inventory.html ', async () => {
         await Hamburger.openMenuAndClickItem('All Items')
@@ -39,29 +47,21 @@ describe('Click \'About\' from menu', () => {
     })
 })
 
-describe('Click \'Logout\' from menu', () => {
-    it('Should be logged out and directed to homepage', async () => {
-        await Hamburger.openMenuAndClickItem('Logout')
-    })
-})
-
-describe(`Be loggged in as ${username} again`, () => {
-    it('Should be logged in', async () => {
-        await Authorize.login(username)
-    })
-})
-
 describe('Click \'Reset App State\' from menu', () => {
-    it('Should remove items from cart', async () => {
+    it('Cart is full of items', async () => {
         await Cart.addMockItemsToCart([0,1,2,3,4,5])
         await Cart.checkCartIsNotEmpty()
+    })
+    it('Click Reset App State', async () => {
         await Hamburger.openMenuAndClickItem('Reset App State')
+    })
+    it('Should have removed all items from cart', async () => {
         await Cart.checkCartIsEmpty()
     })
 })
 
-describe('Delete session cookie to log out if it exists', () => {
-    it('Should be logged out', async () => {
-        await Authorize.logout()
+describe('Click \'Logout\' from menu', () => {
+    it('Should be logged out and directed to homepage', async () => {
+        await Hamburger.openMenuAndClickItem('Logout')
     })
 })
