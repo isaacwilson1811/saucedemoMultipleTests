@@ -45,33 +45,33 @@ class Hamburger extends BaseLogic{
     }
 
     async openMenuAndClickItem(item) {
-        await this.navigateToPage('inventory.html')
-        await this.reload()
+        //First navigate to an endpoint that none of the menu items link to, but the menu is still present.
+        await this.navigateToPage('cart.html')
         await this.buttonOpenMenu.click()
         let expectedEndpoint
         switch(item){
             case 'All Items':
-                expectedEndpoint = 'inventory.html'
                 await this.menuAllItems.click()
+                expectedEndpoint = 'inventory.html'
                 break
             case 'About':
-                expectedEndpoint = 'https://saucelabs.com/'
                 await this.menuAbout.click()
+                expectedEndpoint = 'https://saucelabs.com/'
                 break
             case 'Logout':
-                expectedEndpoint = ''
                 await this.menuLogout.click()
                 await Verify.loggedInUI(false)
+                expectedEndpoint = ''
                 break
             case 'Reset App State':
-                expectedEndpoint = 'inventory.html'
                 await this.menuResetAppState.click()
+                expectedEndpoint = await browser.getUrl()
         }
-        await this.verifyItemClicked(item,expectedEndpoint)
+        await this.verifyNavigated(item, expectedEndpoint)
     }
 
-    async verifyItemClicked (item,expectedEndpoint) {
-        if (item == 'About'){
+    async verifyNavigated (itemClicked, expectedEndpoint) {
+        if (itemClicked == 'About' || itemClicked == 'Reset App State'){
             await Verify.currentURL(expectedEndpoint)
         } else {
             await Verify.currentEndpoint(expectedEndpoint)
