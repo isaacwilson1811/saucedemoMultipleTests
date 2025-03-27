@@ -1,7 +1,12 @@
-import { $, expect } from '@wdio/globals'
+import { $, browser, expect } from '@wdio/globals'
 import BaseLogic from './base_logic.js'
+import Verify from './verify.js'
 
 class Cart extends BaseLogic {
+    // Mock Cart Data
+    allProducts = [0,1,2,3,4,5]
+    randomProduct = Math.floor(Math.random()*(5-0+1)+0) // Random Int between 0-5 Inclusive
+    allProductsMinusTheRandomProduct = this.allProducts.filter(product => product !== this.randomProduct)
 
     navigateToPage (endpoint) {
         return super.navigateTo(endpoint)
@@ -23,6 +28,16 @@ class Cart extends BaseLogic {
         return super.deleteLocalStorage('cart-contents')
     }
 
+    async navigateToCartFromButton(){
+        await this.buttonCart.click()
+        await Verify.currentEndpoint('cart.html')
+    }
+
+    async checkCartCount (expectedNum) {
+        const cartContents = await super.getLocalStorage('cart-contents')
+        await expect(cartContents.length).toBe(expectedNum)
+    }
+
     async checkCartIsEmpty () {
         const cartContents = await super.getLocalStorage('cart-contents')
         cartContents == null ? await expect(cartContents).toBeNull() : await expect(cartContents).toBe(0)
@@ -38,6 +53,16 @@ class Cart extends BaseLogic {
         await this.cartBadge.waitForExist()
         let numberOfItems = Number(await this.cartBadge.getText())
         await expect(numberOfItems).toBe(total)
+    }
+
+    async checkCartUIForListOfProducts (productsArray) {
+        let currentURL = await browser.getUrl()
+        if (currentURL != `${this.baseURL}/cart.html`) {await this.navigateToPage('cart.html')}
+        for (let i=0; i < productsArray.length; i ++){
+            let productNumber = productsArray[i]
+            const product = await $(`//a[@data-test="item-${productNumber}-title-link"]`)
+            await expect(product).toBeExisting()
+        }
     }
 
     async checkCartSpecificProductCount (productNumber, expectedCount) {
