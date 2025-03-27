@@ -53,7 +53,7 @@ describe(`Be loggged in as ${username} again`, () => {
 
 describe('Click \'Reset App State\' from menu', () => {
     it('Should remove items from cart', async () => {
-        await Cart.addMockItemsToCart()
+        await Cart.addMockItemsToCart([0,1,2,3,4,5])
         await Cart.checkCartIsNotEmpty()
         await Hamburger.openMenuAndClickItem('Reset App State')
         await Cart.checkCartIsEmpty()
