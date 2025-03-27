@@ -1,6 +1,5 @@
 import Cart from '../../pageobjects/cart.js'
 import Authorize from '../../pageobjects/authorize.js'
-import Verify from '../../pageobjects/verify.js'
 
 const username = 'standard_user'
 const evilCart = [6,6,6]
@@ -22,6 +21,6 @@ describe('Adding invalid item to cart', () => {
         await Cart.addMockItemsToCart(evilCart)
     })
     it('Should get TypeError: Cannot read properties of undefined', async () => {
-        await Verify.invalidProductError()
+        await Cart.checkInvalidProductError()
     })
 })

@@ -1,5 +1,5 @@
+import { $, expect } from '@wdio/globals'
 import BaseLogic from './base_logic.js'
-import { expect } from '@wdio/globals'
 
 class Cart extends BaseLogic {
 
@@ -45,6 +45,14 @@ class Cart extends BaseLogic {
         if (currentURL != `${this.baseURL}/cart.html`) {await this.navigateToPage('cart.html')}
         let productCount = await $$(`//a[@data-test="item-${productNumber}-title-link"]`)
         await expect(productCount.length).toBe(expectedCount)
+    }
+
+    async checkInvalidProductError () {
+        await this.navigateToPage('cart.html')
+        const logs = await browser.getLogs('browser')
+        const expectedError = 'Cannot read properties of undefined'
+        const errorLogs = logs.filter(log => log.level === 'SEVERE' && log.message.includes(expectedError))
+        await expect(errorLogs.length).toBeGreaterThan(0)
     }
 }
 

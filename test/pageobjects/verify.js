@@ -46,17 +46,6 @@ class Verify extends BaseLogic {
         await expect(currentURL).toBe(expectedURL)
 
     }
-
-    async invalidProductError () {
-        await this.navigateToPage('cart.html')
-
-        const logs = await browser.getLogs('browser')
-        const expectedError = 'Cannot read properties of undefined'
-        const errorLogs = logs.filter(log => log.level === 'SEVERE' && log.message.includes(expectedError))
-
-        await expect(errorLogs.length).toBeGreaterThan(0)
-    }
-
 }
 
 export default new Verify()
