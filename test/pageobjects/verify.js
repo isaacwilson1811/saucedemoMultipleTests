@@ -54,7 +54,6 @@ class Verify extends BaseLogic {
         const expectedError = 'Cannot read properties of undefined'
         const errorLogs = logs.filter(log => log.level === 'SEVERE' && log.message.includes(expectedError))
 
-        console.log(errorLogs)
         await expect(errorLogs.length).toBeGreaterThan(0)
     }
 
